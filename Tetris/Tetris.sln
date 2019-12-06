@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tetris", "Tetris\Tetris.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections", "Collections\Collections.csproj", "{2811FA4F-4929-4871-B031-A59D44BE1268}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enums", "Enums\Enums.csproj", "{7A89B766-E140-47AA-8D02-777A1F110483}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2811FA4F-4929-4871-B031-A59D44BE1268}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2811FA4F-4929-4871-B031-A59D44BE1268}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2811FA4F-4929-4871-B031-A59D44BE1268}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A89B766-E140-47AA-8D02-777A1F110483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A89B766-E140-47AA-8D02-777A1F110483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A89B766-E140-47AA-8D02-777A1F110483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A89B766-E140-47AA-8D02-777A1F110483}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
