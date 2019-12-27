@@ -20,35 +20,33 @@ namespace Tetris
         internal Result TryMove(Direction dir)
         {
             Hide();
-            var clone = Clone();
-            Move(clone, dir);
 
-            var result = VerityPosition(clone);
-            if (result == Result.SUCCESS)
-                Points = clone;
+            Move(dir);
+
+            var result = VerityPosition();
+            if (result != Result.SUCCESS)
+                Move(Reverse(dir));
 
             Draw();
-
             return result;
         }
 
         internal Result TryRotate()
         {
             Hide();
-            var clone = Clone();
-            Rotate(clone);
+            Rotate();
 
-            var result = VerityPosition(clone);
-            if (result == Result.SUCCESS)
-                Points = clone;
+            var result = VerityPosition();
+            if (result != Result.SUCCESS)
+                Rotate();
 
             Draw();
             return result;
         }
 
-        private Result VerityPosition(Point[] newPoints)
+        private Result VerityPosition()
         {
-            foreach (var p in newPoints)
+            foreach (var p in Points)
             {
                 if (p.Y >= Field.Height)
                     return Result.DOWN_BORDER_SRIKE;
@@ -61,40 +59,37 @@ namespace Tetris
             }
             return Result.SUCCESS;
         }
-        private Point[] Clone()
-        {
-            var newPoints = new Point[LENGHT];
-            for(int i = 0; i < LENGHT; i++)
-            {
-                newPoints[i] = new Point(Points[i]);
-            }
-            return newPoints;
-        }
 
         internal bool IsOnTop()
         {
             return Points[0].Y == 0;
         }
 
-        public void Move(Point[] pList, Direction dir)
+        public void Move(Direction dir)
         {
-            foreach(var p in pList)
+            foreach(var p in Points)
             {
                 p.Move(dir);
             }
         }
 
-        //public void Move(Direction dir)
-        //{
-        //    Hide();
-        //    foreach(Point p in points) 
-        //    {
-        //        p.Move(dir);
-        //    }
-        //    Draw();
-        //}
+        private Direction Reverse(Direction dir)
+        {
+            switch (dir)
+            {
+                case Direction.LEFT:
+                    return Direction.RIGHT;
+                case Direction.RIGHT:
+                    return Direction.LEFT;
+                case Direction.DOWN:
+                    return Direction.UP;
+                case Direction.UP:
+                    return Direction.DOWN;
+            }
+            return dir;
+        }
 
-        public abstract void Rotate(Point[] pList);
+        public abstract void Rotate();
 
         public void Hide()
         {
