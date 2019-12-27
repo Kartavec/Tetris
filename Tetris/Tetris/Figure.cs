@@ -71,6 +71,11 @@ namespace Tetris
             return newPoints;
         }
 
+        internal bool IsOnTop()
+        {
+            return Points[0].Y == 0;
+        }
+
         public void Move(Point[] pList, Direction dir)
         {
             foreach(var p in pList)

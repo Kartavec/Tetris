@@ -1,26 +1,36 @@
 ﻿using System;
 using System.Threading;
+using System.Timers;
 
 namespace Tetris
 {
     class Program
     {
+        const int TIMER_INTERVAL = 500;
+        static System.Timers.Timer timer;
+        static private Object _lockObject = new object();
+
+
+        static Figure currentFigure;
         static FigureGenerator generator;
         static void Main(string[] args)
         {
             Console.SetWindowSize(Field.Width, Field.Height);
             Console.SetBufferSize(Field.Width, Field.Height);
 
-            generator = new FigureGenerator(20, 0, '*');
-            Figure currentFigure = generator.GetNewFigure();
+            generator = new FigureGenerator(Field.Width / 2, 0, Drawer.DEFAULT_SYMBOL);
+            currentFigure = generator.GetNewFigure();
+            SetTimer();
 
             while (true)
             {
                 if (Console.KeyAvailable)
                 {
                     var key = Console.ReadKey();
+                    Monitor.Enter(_lockObject);
                     var result = HandleKey(currentFigure, key.Key);
                     ProcessResult(result, ref currentFigure);
+                    Monitor.Exit(_lockObject);
                 }
             }
         }
@@ -30,8 +40,19 @@ namespace Tetris
             if (result == Result.HEAP_STRIKE || result == Result.DOWN_BORDER_SRIKE)
             {
                 Field.AddFigure(currentFigure);
-                currentFigure = generator.GetNewFigure();
-                return true;
+                Field.TryDeleteLines();
+
+                if (currentFigure.IsOnTop())
+                {
+                    WriteGameOver();
+                    timer.Elapsed -= OnTimedEvent;
+                    return true;
+                }
+                else
+                {
+                    currentFigure = generator.GetNewFigure();
+                    return false;
+                }
             }
             else
                 return false;
@@ -51,6 +72,28 @@ namespace Tetris
                     return f.TryRotate();
             }
             return Result.SUCCESS;
+        }
+        private static void SetTimer()
+        {
+            // Create a timer with a two second interval.
+            timer = new System.Timers.Timer(TIMER_INTERVAL);
+            // Hook up the Elapsed event for the timer. 
+            timer.Elapsed += OnTimedEvent;
+            timer.AutoReset = true;
+            timer.Enabled = true;
+        }
+
+        private static void WriteGameOver()
+        {
+            Console.SetCursorPosition(Field.Width / 2 - 8, Field.Height / 2);
+            Console.WriteLine("G A M E   O V E R");
+        }
+        private static void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            Monitor.Enter(_lockObject);
+            var result = currentFigure.TryMove(Direction.DOWN);
+            ProcessResult(result, ref currentFigure);
+            Monitor.Exit(_lockObject);
         }
     }
 }
