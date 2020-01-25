@@ -1,61 +1,42 @@
-﻿using System;
+﻿using Microsoft.SmallBasic.Library;
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Timers;
-using Microsoft.SmallBasic.Library;
 
 namespace Tetris
 {
     class Program
     {
-        const int TIMER_INTERVAL = 500;
+        static int TIMER_INTERVAL = 500;
+
+        static Object lockObj = new Object();
+
         static System.Timers.Timer timer;
-        static private Object _lockObject = new object();
-
-
         static Figure currentFigure;
-        static FigureGenerator generator;
+        static FigureGenerator factory = new FigureGenerator(Field.Width / 2, 0);
+        static bool gameOver = false;
+
         static void Main(string[] args)
         {
             DrawerProvier.Drawer.InitField();
 
-            generator = new FigureGenerator(Field.Width / 2, 0);
-            currentFigure = generator.GetNewFigure();
+            SetTimer();
 
+            currentFigure = factory.GetNewFigure();
+            currentFigure.Draw();
             GraphicsWindow.KeyDown += GraphicsWindow_KeyDown;
-
-            GraphicsWindow.BrushColor = "Red";
-            GraphicsWindow.FontSize = 20;
-            GraphicsWindow.DrawText(10, 10, "Game Over");
-
-            //SetTimer();
-
-            //while (true)
-            //{
-            //    if (Console.KeyAvailable)
-            //    {
-            //        var key = Console.ReadKey();
-            //        Monitor.Enter(_lockObject);
-            //        var result = HandleKey(currentFigure, key.Key);
-            //        ProcessResult(result, ref currentFigure);
-            //        Monitor.Exit(_lockObject);
-            //    }
-            //}
         }
 
         private static void GraphicsWindow_KeyDown()
         {
-            String lastKey = (String)GraphicsWindow.LastKey;
-            switch(lastKey)
-            {
-                case "Left":
-                    currentFigure.TryMove(Direction.LEFT);
-                    break;
-            }
-        }
+            Monitor.Enter(lockObj);
+            var result = HandleKey(currentFigure, GraphicsWindow.LastKey);
 
-        private static void Test()
-        {
-            DrawerProvier.Drawer.DrawPoint(5, 6);
+            if (GraphicsWindow.LastKey == "Down")
+                gameOver = ProcessResult(result, ref currentFigure);
+
+            Monitor.Exit(lockObj);
         }
 
         private static bool ProcessResult(Result result, ref Figure currentFigure)
@@ -68,12 +49,11 @@ namespace Tetris
                 if (currentFigure.IsOnTop())
                 {
                     DrawerProvier.Drawer.WriteGameOver();
-                    timer.Elapsed -= OnTimedEvent;
                     return true;
                 }
                 else
                 {
-                    currentFigure = generator.GetNewFigure();
+                    currentFigure = factory.GetNewFigure();
                     return false;
                 }
             }
@@ -81,21 +61,6 @@ namespace Tetris
                 return false;
         }
 
-        private static Result HandleKey(Figure f, ConsoleKey key)
-        {
-            switch (key)
-            {
-                case ConsoleKey.LeftArrow:
-                    return f.TryMove(Direction.LEFT);
-                case ConsoleKey.RightArrow:
-                    return f.TryMove(Direction.RIGHT);
-                case ConsoleKey.DownArrow:
-                    return f.TryMove(Direction.DOWN);
-                case ConsoleKey.Spacebar:
-                    return f.TryRotate();
-            }
-            return Result.SUCCESS;
-        }
         private static void SetTimer()
         {
             // Create a timer with a two second interval.
@@ -108,10 +73,28 @@ namespace Tetris
 
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            Monitor.Enter(_lockObject);
+            Monitor.Enter(lockObj);
             var result = currentFigure.TryMove(Direction.DOWN);
-            ProcessResult(result, ref currentFigure);
-            Monitor.Exit(_lockObject);
+            gameOver = ProcessResult(result, ref currentFigure);
+            if (gameOver)
+                timer.Stop();
+            Monitor.Exit(lockObj);
+        }
+
+        private static Result HandleKey(Figure f, String key)
+        {
+            switch (key)
+            {
+                case "Left":
+                    return f.TryMove(Direction.LEFT);
+                case "Right":
+                    return f.TryMove(Direction.RIGHT);
+                case "Down":
+                    return f.TryMove(Direction.DOWN);
+                case "Space":
+                    return f.TryRotate();
+            }
+            return Result.SUCCESS;
         }
     }
 }
