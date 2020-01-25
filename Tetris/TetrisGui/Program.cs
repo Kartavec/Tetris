@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Timers;
+using Microsoft.SmallBasic.Library;
 
 namespace Tetris
 {
@@ -19,18 +20,33 @@ namespace Tetris
 
             generator = new FigureGenerator(Field.Width / 2, 0);
             currentFigure = generator.GetNewFigure();
-            SetTimer();
 
-            while (true)
+            GraphicsWindow.KeyDown += GraphicsWindow_KeyDown;
+
+
+            //SetTimer();
+
+            //while (true)
+            //{
+            //    if (Console.KeyAvailable)
+            //    {
+            //        var key = Console.ReadKey();
+            //        Monitor.Enter(_lockObject);
+            //        var result = HandleKey(currentFigure, key.Key);
+            //        ProcessResult(result, ref currentFigure);
+            //        Monitor.Exit(_lockObject);
+            //    }
+            //}
+        }
+
+        private static void GraphicsWindow_KeyDown()
+        {
+            String lastKey = (String)GraphicsWindow.LastKey;
+            switch(lastKey)
             {
-                if (Console.KeyAvailable)
-                {
-                    var key = Console.ReadKey();
-                    Monitor.Enter(_lockObject);
-                    var result = HandleKey(currentFigure, key.Key);
-                    ProcessResult(result, ref currentFigure);
-                    Monitor.Exit(_lockObject);
-                }
+                case "Left":
+                    currentFigure.TryMove(Direction.LEFT);
+                    break;
             }
         }
 
