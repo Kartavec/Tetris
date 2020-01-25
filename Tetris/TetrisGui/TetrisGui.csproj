@@ -46,8 +46,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleDrawer.cs" />
+    <Compile Include="Direction.cs" />
+    <Compile Include="DrawerProvier.cs" />
+    <Compile Include="Field.cs" />
+    <Compile Include="Figure.cs" />
+    <Compile Include="FigureGenerator.cs" />
+    <Compile Include="GuiDrawer.cs" />
+    <Compile Include="IDrawer.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="Square.cs" />
+    <Compile Include="Stick.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
