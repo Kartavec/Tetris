@@ -23,6 +23,9 @@ namespace Tetris
 
             GraphicsWindow.KeyDown += GraphicsWindow_KeyDown;
 
+            GraphicsWindow.BrushColor = "Red";
+            GraphicsWindow.FontSize = 20;
+            GraphicsWindow.DrawText(10, 10, "Game Over");
 
             //SetTimer();
 
