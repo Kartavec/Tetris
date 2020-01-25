@@ -18,6 +18,10 @@ namespace Tetris
             Console.SetWindowSize(Field.Width, Field.Height);
             Console.SetBufferSize(Field.Width, Field.Height);
 
+            Test();
+
+
+
             generator = new FigureGenerator(Field.Width / 2, 0, Drawer.DEFAULT_SYMBOL);
             currentFigure = generator.GetNewFigure();
             SetTimer();
@@ -33,6 +37,11 @@ namespace Tetris
                     Monitor.Exit(_lockObject);
                 }
             }
+        }
+
+        private static void Test()
+        {
+            DrawerProvier.Drawer.DrawPoint(5, 6);
         }
 
         private static bool ProcessResult(Result result, ref Figure currentFigure)
