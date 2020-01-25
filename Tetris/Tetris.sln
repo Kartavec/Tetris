@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enums", "Enums\Enums.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OOP", "OOP\OOP.csproj", "{91A98338-E79D-4BA9-8A69-D267F0A21F15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Randomizer", "Randomizer\Randomizer.csproj", "{35551DAF-B101-4465-9086-71F658BCF881}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Randomizer", "Randomizer\Randomizer.csproj", "{35551DAF-B101-4465-9086-71F658BCF881}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetrisGui", "TetrisGui\TetrisGui.csproj", "{306E7700-ACD0-4077-B84C-C3A5EE0E13D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{35551DAF-B101-4465-9086-71F658BCF881}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35551DAF-B101-4465-9086-71F658BCF881}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35551DAF-B101-4465-9086-71F658BCF881}.Release|Any CPU.Build.0 = Release|Any CPU
+		{306E7700-ACD0-4077-B84C-C3A5EE0E13D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{306E7700-ACD0-4077-B84C-C3A5EE0E13D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{306E7700-ACD0-4077-B84C-C3A5EE0E13D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{306E7700-ACD0-4077-B84C-C3A5EE0E13D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
